@@ -1,13 +1,13 @@
 # Desktop Companion for Home Assistant
 
-[![Test and build](https://github.com/tobias-kuendig/hacompanion/actions/workflows/build.yml/badge.svg)](https://github.com/tobias-kuendig/hacompanion/actions/workflows/build.yml)
+[![Test and build](https://github.com/jackyaz/hacompanion/actions/workflows/build.yml/badge.svg)](https://github.com/jackyaz/hacompanion/actions/workflows/build.yml)
 
 This is an unofficial Desktop Companion App for [Home Assistant](https://www.home-assistant.io/) written in Go.
 
 The companion is running as a background process and sends local hardware information to your Home Assistant instance.
 Additionally, you can send notifications from Home Assistant to your Computer and display them using `notify-send`.
 
-Currently, **Linux** is the only supported operating system (tested on Ubuntu 20.04 / KDE Neon)
+Currently, **Linux** is the only supported operating system.
 
 
 ## Supported sensors
@@ -25,10 +25,15 @@ Currently, **Linux** is the only supported operating system (tested on Ubuntu 20
 
 ## Installation
 
-You can download a compiled binary [from the releases page](https://github.com/tobias-kuendig/hacompanion/releases) or alternatively use the provided
-`deb` or `rpm` packages.
+You can build this from source by running the below commands:
 
-Just download the `_binary` file for your architecture and copy it to `~/.local/bin/hacompanion` (or any other path on your system).
+```shell
+git clone https://github.com/tobias-kuendig/hacompanion.git
+cd hacompanion
+go build
+mkidir -p ~/.local/bin/
+cp hacompanion ~/.local/bin/hacompanion
+```
 
 You can now start the companion with the `hacompanion` command. But before doing so, you have to set up
 the configuration:
@@ -57,13 +62,13 @@ If your system is using Systemd, you can use the following unit file to run the 
 
 ```shell
 mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user
-${EDITOR:-vi} "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/hacompanion.service"
+${EDITOR:-nano} "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/hacompanion.service"
 ```
 
 ```ini
 [Unit]
 Description=Home Assistant Desktop Companion
-Documentation=https://github.com/tobias-kuendig/hacompanion
+Documentation=https://github.com/jackyaz/hacompanion
 # Uncomment the line below if you are using NetworkManager to ensure hacompanion
 # only starts after your host is online
 # After=NetworkManager-wait-online.service
@@ -71,7 +76,7 @@ Documentation=https://github.com/tobias-kuendig/hacompanion
 [Service]
 # Load ~/.config/hacompanion/env where you can for example set
 # HASS_TOKEN, HASS_DEVICE_NAME etc.
-EnvironmentFile=%E/hacompanion/env
+# EnvironmentFile=%E/hacompanion/env
 # Make sure to set the absolute path to hacompanion correctly below
 ExecStart=%h/.local/bin/hacompanion -config=%E/hacompanion.toml
 Restart=on-failure
@@ -174,6 +179,5 @@ data:
 
 ## Automation ideas
 
-Feel free to share your automation ideas [in the Discussions section](https://github.com/tobias-kuendig/hacompanion/discussions) of this
+Feel free to share your automation ideas [in the Discussions section](https://github.com/jackyaz/hacompanion/discussions) of this
 repo.
-
