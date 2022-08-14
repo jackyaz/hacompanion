@@ -1,6 +1,6 @@
 # Desktop Companion for Home Assistant
 
-[![Test and build](https://github.com/jackyaz/hacompanion/actions/workflows/build.yml/badge.svg)](https://github.com/jackyaz/hacompanion/actions/workflows/build.yml)
+This was forked from [tobias-kuendig/hacompanion](https://github.com/tobias-kuendig/hacompanion)
 
 This is an unofficial Desktop Companion App for [Home Assistant](https://www.home-assistant.io/) written in Go.
 
@@ -28,7 +28,7 @@ Currently, **Linux** is the only supported operating system.
 You can build this from source by running the below commands:
 
 ```shell
-git clone https://github.com/tobias-kuendig/hacompanion.git
+git clone https://github.com/jackyaz/hacompanion.git
 cd hacompanion
 go build
 mkidir -p ~/.local/bin/
