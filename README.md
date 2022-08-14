@@ -32,6 +32,7 @@ git clone https://github.com/jackyaz/hacompanion.git
 cd hacompanion
 go build
 sudo cp hacompanion /usr/local/bin/hacompanion
+sudo chown root:root /usr/local/bin/hacompanion
 ```
 
 You can now start the companion with the `hacompanion` command. But before doing so, you have to set up
