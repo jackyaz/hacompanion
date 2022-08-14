@@ -31,7 +31,7 @@ You can build this from source by running the below commands:
 git clone https://github.com/jackyaz/hacompanion.git
 cd hacompanion
 go build
-mkidir -p ~/.local/bin/
+mkdir -p ~/.local/bin/
 cp hacompanion ~/.local/bin/hacompanion
 ```
 
