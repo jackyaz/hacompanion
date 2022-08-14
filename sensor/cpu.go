@@ -17,6 +17,7 @@ import (
 
 var (
 	reCPUTemp  = regexp.MustCompile(`(?m)(temp1|Package id|Core \d)[\s\d]*:\s+.?([\d\.]+)°`)
+	reCPUTemp2 = regexp.MustCompile(`(?mi)^\s?(?P<name>[^:]+):\s+(?P<value>\d+)`)
 	reCPUUsage = regexp.MustCompile(`(?m)^\s*cpu(\d+)?.*`)
 )
 
@@ -41,15 +42,26 @@ func (c CPUTemp) Run(ctx context.Context) (*entity.Payload, error) {
 	cmd := exec.CommandContext(ctx, "sensors", args...)
 	cmd.Stdout = &out
 	cmd.Stderr = &out
-	if err := cmd.Run(); err != nil {
-		return nil, err
-	}
+	//if err := cmd.Run(); err != nil {
+	//	return nil, err
+	//}
 	return c.process(out.String())
 }
 
 func (c CPUTemp) process(output string) (*entity.Payload, error) {
 	p := entity.NewPayload()
 	matches := reCPUTemp.FindAllStringSubmatch(output, -1)
+	if len(matches) == 0 {
+		b, err := ioutil.ReadFile("/sys/class/thermal/thermal_zone0/temp")
+		if err != nil {
+			return nil, err
+		}
+		temp, err := strconv.ParseFloat(strings.TrimSuffix(string(b), "\n"), 64)
+		if err != nil {
+			return nil, err
+		}
+		p.State = temp / 1000
+	}
 	for _, match := range matches {
 		if len(match) < 3 {
 			return nil, fmt.Errorf("invalid output form lm-sensors received: %s", output)
