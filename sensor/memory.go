@@ -44,18 +44,23 @@ func (m Memory) process(output string) (*entity.Payload, error) {
 		// convert kb to MB
 		mb := util.RoundToTwoDecimals(float64(kb) / 1024)
 		switch strings.TrimSpace(match[1]) {
-		case "MemFree":
-			p.State = mb
-		case "MemAvailable":
-			fallthrough
 		case "MemTotal":
 			fallthrough
+		case "MemAvailable":
+			fallthrough
+		case "MemFree":
+			fallthrough
 		case "SwapFree":
+			fallthrough
+		case "Buffers":
+			fallthrough
+		case "Cached":
 			fallthrough
 		case "SwapTotal":
 			p.Attributes[util.ToSnakeCase(match[1])] = mb
 		}
 	}
+	p.State = util.RoundToTwoDecimals(p.Attributes["mem_total"].(float64) - p.Attributes["mem_free"].(float64))
 	if p.State == "" {
 		return nil, fmt.Errorf("could not detrmine memory state based on /proc/meminfo: %s", output)
 	}
