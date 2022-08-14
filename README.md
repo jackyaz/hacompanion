@@ -31,8 +31,7 @@ You can build this from source by running the below commands:
 git clone https://github.com/jackyaz/hacompanion.git
 cd hacompanion
 go build
-mkdir -p ~/.local/bin/
-cp hacompanion ~/.local/bin/hacompanion
+sudo cp hacompanion /usr/local/bin/hacompanion
 ```
 
 You can now start the companion with the `hacompanion` command. But before doing so, you have to set up
@@ -43,30 +42,26 @@ the configuration:
 1. Make sure you have the [Mobile App integration](https://www.home-assistant.io/integrations/mobile_app/) enabled in Home Assistant (it is on by default).
 1. Download a copy of the [configuration file](hacompanion.toml). Save it to `~/.config/hacompanion.toml`.
     ```shell
-    mkdir -p ~/.config
-    wget -O ~/.config/hacompanion.toml https://raw.githubusercontent.com/jackyaz/hacompanion/main/hacompanion.toml
+    sudo mkdir -p /etc/hacompanion
+    sudo wget -O /etc/hacompanion/hacompanion.toml https://raw.githubusercontent.com/jackyaz/hacompanion/main/hacompanion.toml
     ```
 1. In Home Assistant, generate a token by
    visting [your profile page](https://www.home-assistant.io/docs/authentication/#your-account-profile), then click on `Generate Token` at
    the end of the page.
-1. Update your `~/.config/hacompanion.toml` file's `[homeassistant]` section with the generated `token`.
+1. Update your /etc/hacompanion/hacompanion.toml` file's `[homeassistant]` section with the generated `token`.
 1. Set the display name of your device (`device_name`) and the URL of your Home Assistant instance (`host`).
 1. To receive notifications on a specific IP address you may need to change the 
 `push_url` and `listen` settings under `[notifications]` to point respectively 
 to your local IP address and the listen port. Without any value hacompanion will 
 use your default NIC and listen on port `8080`.
 1. Configure all sensors in the configuration file as you see fit.
-1. Run the companion by executing `hacompanion` (use the `-config=/path/to/config` flag to pass the path to a custom configuration
-   file, `~/.config/hacompanion.toml` is used by default).
-1. You should now see your new sensors under `Settings -> Integrations -> Mobile App -> Your Device`.
 
 ## Run the companion on system boot
 
 If your system is using Systemd, you can use the following unit file to run the companion on system boot:
 
 ```shell
-mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user
-${EDITOR:-nano} "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/hacompanion.service"
+sudo ${EDITOR:-nano} "/etc/systemd/system/hacompanion.service"
 ```
 
 ```ini
@@ -78,11 +73,7 @@ Documentation=https://github.com/jackyaz/hacompanion
 # After=NetworkManager-wait-online.service
 
 [Service]
-# Load ~/.config/hacompanion/env where you can for example set
-# HASS_TOKEN, HASS_DEVICE_NAME etc.
-# EnvironmentFile=%E/hacompanion/env
-# Make sure to set the absolute path to hacompanion correctly below
-ExecStart=%h/.local/bin/hacompanion -config=%E/hacompanion.toml
+ExecStart=/usr/local/bin/hacompanion -config=/etc/hacompanion/hacompanion.toml
 Restart=on-failure
 RestartSec=5
 Type=simple
@@ -94,13 +85,15 @@ WantedBy=default.target
 Start the companion by running:
 
 ```bash
-systemctl --user daemon-reload
-systemctl --user enable --now hacompanion
+sudo systemctl daemon-reload
+sudo systemctl enable --now hacompanion
 # check status with:
-# systemctl --user status hacompanion
+# sudo systemctl status hacompanion
 # and logs with:
-# journalctl --user -xlf -u hacompanion
+# sudo journalctl -xlf -u hacompanion
 ```
+
+You should now see your new sensors under `Settings -> Integrations -> Mobile App -> Your Device`.
 
 ## Custom scripts
 

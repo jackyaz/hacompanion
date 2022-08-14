@@ -11,7 +11,7 @@ host = "http://<your-home-assistant-ip>:8123"
 update_interval = "15s"
 # The location, where all registration information for Home Assistant will be stored on your machine.
 # You do not need to change this.
-registration_file = "~/.config/hacompanion-registration.json"
+registration_file = "/etc/hacompanion/hacompanion-registration.json"
 
 [notifications]
 # Where Home Assistant should send notifications to. Make sure to insert your
