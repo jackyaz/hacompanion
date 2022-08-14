@@ -60,7 +60,7 @@ func (m Memory) process(output string) (*entity.Payload, error) {
 			p.Attributes[util.ToSnakeCase(match[1])] = mb
 		}
 	}
-	p.State = util.RoundToTwoDecimals(p.Attributes["mem_total"].(float64) - p.Attributes["mem_free"].(float64))
+	p.State = util.RoundToTwoDecimals(p.Attributes["mem_total"].(float64) - p.Attributes["mem_free"].(float64)  - p.Attributes["buffers"].(float64)  - p.Attributes["cached"].(float64))
 	if p.State == "" {
 		return nil, fmt.Errorf("could not detrmine memory state based on /proc/meminfo: %s", output)
 	}
