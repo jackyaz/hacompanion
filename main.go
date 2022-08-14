@@ -29,10 +29,10 @@ import (
 var (
 	AppID        = "homeassistant-desktop-companion"
 	AppName      = "Home Assistant Desktop Companion"
-	Manufacturer = "https://github.com/tobias-kuendig/hacompanion"
+	Manufacturer = "https://github.com/jackyaz/hacompanion"
 	Model        = "hacompanion"
 	OsName       = runtime.GOOS
-	Version      = "1.0.4"
+	Version      = "1.0.5"
 	// NOTE for Home Assistant 2022.3.3 and earlier versions:
 	// OsVersion populates the "Firmware" field on the devices page, the
 	// AppVersion is not displayed there. This is why we're construction
