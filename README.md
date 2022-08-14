@@ -42,6 +42,10 @@ the configuration:
 
 1. Make sure you have the [Mobile App integration](https://www.home-assistant.io/integrations/mobile_app/) enabled in Home Assistant (it is on by default).
 1. Download a copy of the [configuration file](hacompanion.toml). Save it to `~/.config/hacompanion.toml`.
+    ```shell
+    mkdir -p ~/.config
+    wget -O ~/.config/hacompanion.toml https://raw.githubusercontent.com/jackyaz/hacompanion/main/hacompanion.toml
+    ```
 1. In Home Assistant, generate a token by
    visting [your profile page](https://www.home-assistant.io/docs/authentication/#your-account-profile), then click on `Generate Token` at
    the end of the page.
