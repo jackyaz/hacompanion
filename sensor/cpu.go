@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	reCPUTemp  = regexp.MustCompile(`(?m)(Package id|Core \d)[\s\d]*:\s+.?([\d\.]+)°`)
+	reCPUTemp  = regexp.MustCompile(`(?m)(temp1|Package id|Core \d)[\s\d]*:\s+.?([\d\.]+)°`)
 	reCPUUsage = regexp.MustCompile(`(?m)^\s*cpu(\d+)?.*`)
 )
 
@@ -54,7 +54,7 @@ func (c CPUTemp) process(output string) (*entity.Payload, error) {
 		if len(match) < 3 {
 			return nil, fmt.Errorf("invalid output form lm-sensors received: %s", output)
 		}
-		if strings.EqualFold(match[1], "Package id") {
+		if strings.EqualFold(match[1], "Package id") || strings.EqualFold(match[1], "temp1") {
 			p.State = match[2]
 		} else {
 			p.Attributes[util.ToSnakeCase(match[1])] = match[2]
