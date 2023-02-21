@@ -52,7 +52,7 @@ func (c CPUTemp) process(output string) (*entity.Payload, error) {
 	p := entity.NewPayload()
 	matches := reCPUTemp.FindAllStringSubmatch(output, -1)
 	if len(matches) == 0 {
-		b, err := ioutil.ReadFile("/sys/class/thermal/thermal_zone0/temp")
+		b, err := os.ReadFile("/sys/class/thermal/thermal_zone0/temp")
 		if err != nil {
 			return nil, err
 		}
