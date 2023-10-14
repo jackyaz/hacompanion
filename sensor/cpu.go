@@ -16,8 +16,9 @@ import (
 )
 
 var (
-	reCPUTemp  = regexp.MustCompile(`(?m)(temp1|Package id|Core \d)[\s\d]*:\s+.?([\d\.]+)°`)
-	reCPUTemp2 = regexp.MustCompile(`(?mi)^\s?(?P<name>[^:]+):\s+(?P<value>\d+)`)
+	reCPUTemp = regexp.MustCompile(`(?m)(temp1|Package id|Core \d)[\s\d]*:\s+.?([\d\.]+)°`)
+	// This is currently unused.
+	//reCPUTemp2 = regexp.MustCompile(`(?mi)^\s?(?P<name>[^:]+):\s+(?P<value>\d+)`)
 	reCPUUsage = regexp.MustCompile(`(?m)^\s*cpu(\d+)?.*`)
 )
 
@@ -107,10 +108,10 @@ func (c CPUUsage) process(outputs []string) (*entity.Payload, error) {
 		usage float64
 		total float64
 	}
-	// Parse the usage deltas out form the stats output.
+	// Parse out the usage deltas from the stats output.
 	stats := map[string][]stat{}
 	for i, output := range outputs {
-		// Returns a single cpu core measurement
+		// Return a measurement for a single core.
 		matches := reCPUUsage.FindAllStringSubmatch(output, -1)
 		for _, submatch := range matches {
 			match := strings.TrimSpace(submatch[0])
@@ -118,7 +119,7 @@ func (c CPUUsage) process(outputs []string) (*entity.Payload, error) {
 			if len(submatch) > 1 {
 				cpu = strings.TrimSpace(submatch[1])
 			}
-			// Fetch the relevant values, convert them to floats.
+			// Fetch the relevant values and convert them to floats.
 			fields := strings.Fields(match)
 			user, err := strconv.ParseFloat(fields[1], 64)
 			if err != nil {
@@ -142,7 +143,7 @@ func (c CPUUsage) process(outputs []string) (*entity.Payload, error) {
 			}
 		}
 	}
-	// Calculate the percentage values per core.
+	// Calculate the usage per core as a percentage.
 	for cpu, value := range stats {
 		u := value[1].usage - value[0].usage
 		t := value[1].total - value[0].total

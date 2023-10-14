@@ -39,7 +39,7 @@ type ScriptConfig struct {
 }
 
 // Sensor is a concrete instance of a sensor defined in the config file.
-// It's Runner is run to gather data.
+// Its Runner is run to gather data.
 type Sensor struct {
 	Type        string
 	Runner      Runner
@@ -66,7 +66,7 @@ func (s Sensor) Update(ctx context.Context, wg *sync.WaitGroup, outputs *Outputs
 	outputs.Add(Output{Sensor: s, Payload: value})
 }
 
-// Invalidate sensor by settings its state to unavailable
+// Invalidate sets the state of the given sensor(s) to unavailable.
 func (s Sensor) Invalidate(outputs *Outputs) {
 	p := NewPayload()
 	p.State = "unavailable"
